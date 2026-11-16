@@ -1,0 +1,1 @@
+{"action": "create", "reason": "The agent correctly identified and fixed a cross-platform compatibility issue in a Next.js `tsconfig.json` file by adding the `forceConsistentCasingInFileNames` option. This is a valuable, reusable piece of knowledge for setting up any Next.js project.", "evidence": "references/evidence-3f048258.md"}

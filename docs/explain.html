@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AegisAI — Complete System Documentation</title>
+    <style>
+        :root {
+            --bg: #0b0f1a;
+            --panel: #111827;
+            --panel-2: #0f172a;
+            --border: #1f2937;
+            --text: #e5e7eb;
+            --muted: #9ca3af;
+            --accent: #facc15;
+            --accent-2: #ec4899;
+            --accent-3: #a855f7;
+            --code: #0d1117;
+        }
+        * { box-sizing: border-box; }
+        html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; line-height: 1.6; }
+        a { color: var(--accent); }
+        header { border-bottom: 1px solid var(--border); background: linear-gradient(180deg, rgba(17,24,39,0.9), rgba(11,15,26,0.6)); backdrop-filter: blur(8px); position: sticky; top: 0; z-index: 50; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 24px; }
+        .title { font-size: 40px; font-weight: 800; letter-spacing: -0.02em; }
+        .subtitle { color: var(--muted); margin-top: 6px; }
+        nav { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; }
+        nav a { text-decoration: none; padding: 8px 12px; border-radius: 8px; background: var(--panel); border: 1px solid var(--border); font-size: 13px; color: var(--text); }
+        nav a:hover { border-color: var(--accent); color: var(--accent); }
+        section { margin-top: 48px; scroll-margin-top: 90px; }
+        h2 { font-size: 26px; margin: 0 0 14px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
+        h3 { font-size: 18px; margin: 22px 0 10px; color: #f3f4f6; }
+        p { color: #cbd5e1; }
+        .grid { display: grid; gap: 16px; }
+        .grid-2 { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+        .grid-3 { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+        .card { background: var(--panel); border: 1px solid var(--border); border-radius: 14px; padding: 18px; }
+        .card h4 { margin: 0 0 8px; font-size: 15px; color: #f9fafb; }
+        .card p, .card li { color: #cbd5e1; font-size: 14px; }
+        .card ul { margin: 8px 0 0 18px; padding: 0; }
+        .badge { display: inline-block; padding: 3px 8px; border-radius: 999px; background: #111827; border: 1px solid var(--border); font-size: 12px; color: #e5e7eb; }
+        .badge-y { border-color: #facc15; color: #facc15; }
+        .badge-p { border-color: #ec4899; color: #ec4899; }
+        .badge-v { border-color: #a855f7; color: #a855f7; }
+        code, pre { background: var(--code); border: 1px solid var(--border); border-radius: 10px; padding: 2px 6px; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 13px; color: #e5e7eb; }
+        pre { padding: 14px; overflow-x: auto; }
+        .callout { border-left: 4px solid var(--accent); background: rgba(250,204,21,0.08); padding: 14px 16px; border-radius: 10px; }
+        .callout.pink { border-left-color: var(--accent-2); background: rgba(236,72,153,0.08); }
+        .callout.purple { border-left-color: var(--accent-3); background: rgba(168,85,247,0.08); }
+        table { width: 100%; border-collapse: collapse; font-size: 14px; }
+        th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--border); }
+        th { color: var(--muted); font-weight: 600; }
+        .flow { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+        .flow .node { background: var(--panel); border: 1px solid var(--border); padding: 10px 14px; border-radius: 10px; font-weight: 600; }
+        .flow .arrow { color: var(--muted); }
+        footer { margin-top: 60px; padding: 24px 0; border-top: 1px solid var(--border); color: var(--muted); font-size: 13px; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div style="display:flex;align-items:center;gap:12px;">
+                <div style="width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#facc15,#ec4899);display:inline-flex;align-items:center;justify-content:center;font-weight:800;color:#0b0f1a;">A</div>
+                <div>
+                    <div class="title">AegisAI</div>
+                    <div class="subtitle">Enterprise Multi-Agent AI Orchestration &amp; RAG Platform</div>
+                </div>
+            </div>
+            <nav>
+                <a href="#architecture">Architecture</a>
+                <a href="#pipelines">Pipelines</a>
+                <a href="#tool-stack">Tool Stack</a>
+                <a href="#features">Features</a>
+                <a href="#scope">Scope</a>
+                <a href="#limitations">Limitations</a>
+                <a href="#advantages">Advantages</a>
+                <a href="#future">Future Enhancements</a>
+                <a href="#database">Database</a>
+                <a href="#live">Live URL</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <section id="architecture">
+            <h2>System Architecture</h2>
+            <p>AegisAI is split into a <strong>FastAPI backend</strong> and a <strong>Next.js 14 frontend</strong>, orchestrated locally via Docker Compose. The backend follows clean architecture with strict separation between agents, API routes, core config, evaluation, graph orchestration, LLM clients, memory, prompts, schemas, and tools.</p>
+
+            <div class="grid grid-2" style="margin-top:18px;">
+                <div class="card">
+                    <h4><span class="badge badge-y">Backend</span> FastAPI + Python 3.12</h4>
+                    <ul>
+                        <li><strong>agents/</strong> — 9 standalone agents + evidence verifier + gap analyzer + chat history</li>
+                        <li><strong>api/</strong> — FastAPI router with 20+ endpoints (chat, pipeline, history, documents, reports, ingestion)</li>
+                        <li><strong>core/</strong> — Config, logging, constants</li>
+                        <li><strong>evaluation/</strong> — DeepEval-style and RAGAS-style heuristic metrics</li>
+                        <li><strong>graph/</strong> — LangGraph StateGraph pipeline, edges, nodes, SSE streaming</li>
+                        <li><strong>llm/</strong> — Gemini 3.6 Flash primary, Groq fallback, auto-fallback logic</li>
+                        <li><strong>memory/</strong> — Qdrant client + embedding + retrieval pipeline</li>
+                        <li><strong>prompts/</strong> — Markdown system prompts with SHA-256 hashes</li>
+                        <li><strong>schemas/</strong> — Pydantic contracts for requests, responses, evidence, agents</li>
+                        <li><strong>tools/</strong> — Document loader, Tavily search, web scraper, MCP client, utilities</li>
+                        <li><strong>services/</strong> — PDF report generation (FPDF)</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4><span class="badge badge-p">Frontend</span> Next.js 14 + React 18</h4>
+                    <ul>
+                        <li><strong>app/</strong> — App Router layout, main dashboard page</li>
+                        <li><strong>components/</strong> — Chat, AgentTrace, ReportView, FileUpload, DocumentList, HistoryList, EvidenceLink, ToolExecutionCheckbox, EvidenceGapAnalysis</li>
+                        <li><strong>lib/</strong> — API client for backend endpoints</li>
+                        <li><strong>hooks/</strong> — Reusable React hooks</li>
+                        <li><strong>public/</strong> — Static assets</li>
+                        <li>SPA with 7 sections: Home, About, Docs, Pipeline, Chat, Documents, History</li>
+                        <li>Tailwind CSS + lucide-react icons + react-markdown</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card" style="margin-top:18px;">
+                <h4><span class="badge badge-v">Infrastructure</span> Docker Compose</h4>
+                <p>Three services defined in <code>docker/docker-compose.yml</code>:</p>
+                <ul>
+                    <li><strong>qdrant</strong> — Vector database (ports 6333, 6334) with health checks</li>
+                    <li><strong>backend</strong> — FastAPI app (port 8000) depends on qdrant</li>
+                    <li><strong>frontend</strong> — Next.js app (port 3000) depends on backend</li>
+                </ul>
+                <pre>docker compose -f docker/docker-compose.yml up --build</pre>
+            </div>
+        </section>
+
+        <section id="pipelines">
+            <h2>Pipelines</h2>
+            <p>AegisAI uses multiple coordinated pipelines to transform user queries into evidence-grounded reports.</p>
+
+            <h3>1. Main LangGraph Pipeline</h3>
+            <div class="flow">
+                <div class="node">Supervisor</div><div class="arrow">→</div>
+                <div class="node">Planner</div><div class="arrow">→</div>
+                <div class="node">Retriever</div><div class="arrow">→</div>
+                <div class="node">Researcher</div><div class="arrow">→</div>
+                <div class="node">ToolAgent</div><div class="arrow">→</div>
+                <div class="node">Validator</div><div class="arrow">→</div>
+                <div class="node">Reasoner</div><div class="arrow">→</div>
+                <div class="node">Critic</div><div class="arrow">→</div>
+                <div class="node">ReportGenerator</div><div class="arrow">→</div>
+                <div class="node">Evaluation</div><div class="arrow">→</div>
+                <div class="node">Memory</div><div class="arrow">→</div>
+                <div class="node">END</div>
+            </div>
+            <p style="margin-top:10px;">Each node is a LangGraph state node. The shared <code>PipelineState</code> carries task, plan, retrieved context, research, validation, reasoning, critique, report, evidence, tool calls, memory entries, and evaluation results. Conditional edges allow routing after validation, critique, and report generation.</p>
+
+            <h3>2. Evidence Verification Pipeline</h3>
+            <p>After the main pipeline produces a response, the evidence verification pipeline extracts claims, matches them against available evidence, generates citations, and computes confidence/relevance scores. This ensures responses are grounded in retrieved or researched evidence.</p>
+
+            <h3>3. Evidence Gap Analysis</h3>
+            <p>Analyzes coverage of evidence across claims, identifies unsupported assertions, and provides recommendations for additional retrieval or research. Includes visual coverage metrics in the frontend.</p>
+
+            <h3>4. Chat History Pipeline</h3>
+            <p>Persistent conversation storage with CRUD operations, search, export/import. Managed by <code>ChatHistoryManager</code> with in-memory storage (extendable to persistent DB).</p>
+
+            <h3>5. Ingestion Pipelines</h3>
+            <p>Multi-format document ingestion (PDF, DOCX, XLS, XLSX, TXT, MD, CSV, ZIP) via Docling and custom loaders. URL ingestion and GitHub repo ingestion pipelines parse content, chunk it, embed it, and upsert into Qdrant.</p>
+
+            <h3>6. PDF Report Pipeline</h3>
+            <p>Generates branded PDF reports from Markdown with table of contents, heading hierarchy, body content, and "Aegis AI" watermark using FPDF.</p>
+        </section>
+
+        <section id="tool-stack">
+            <h2>Tool Stack</h2>
+            <div class="grid grid-3">
+                <div class="card">
+                    <h4>Backend Runtime</h4>
+                    <ul>
+                        <li>Python 3.12+</li>
+                        <li>FastAPI (async web framework)</li>
+                        <li>Uvicorn (ASGI server)</li>
+                        <li>Pydantic v2 + Pydantic Settings</li>
+                        <li>Structlog (structured logging)</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4>AI &amp; Orchestration</h4>
+                    <ul>
+                        <li>LangGraph (StateGraph pipeline)</li>
+                        <li>Google GenAI SDK (Gemini 3.6 Flash)</li>
+                        <li>Groq (fallback LLM provider)</li>
+                        <li>Tavily Python (web search)</li>
+                        <li>LangSmith (tracing &amp; observability)</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4>Document &amp; Embeddings</h4>
+                    <ul>
+                        <li>Docling (PDF, DOCX, URL parsing)</li>
+                        <li>Qdrant Client (vector DB)</li>
+                        <li>BGE-M3 embeddings (via google-genai or custom)</li>
+                        <li>FPDF (PDF report generation)</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4>Frontend Runtime</h4>
+                    <ul>
+                        <li>Next.js 14 (App Router)</li>
+                        <li>React 18</li>
+                        <li>Tailwind CSS 3.4</li>
+                        <li>TypeScript 5</li>
+                        <li>lucide-react (icons)</li>
+                        <li>react-markdown (rendering)</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4>Evaluation</h4>
+                    <ul>
+                        <li>DeepEval-style heuristics (report quality, pipeline execution)</li>
+                        <li>RAGAS-style heuristics (context relevance, faithfulness, answer relevancy)</li>
+                        <li>pytest + pytest-asyncio (testing)</li>
+                        <li>Ruff (linting)</li>
+                        <li>Mypy (type checking)</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4>Infrastructure</h4>
+                    <ul>
+                        <li>Docker + Docker Compose</li>
+                        <li>Qdrant (vector database)</li>
+                        <li>Local development: uvicorn + npm</li>
+                        <li>No cloud deployment configured</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="features">
+            <h2>Features</h2>
+            <div class="grid grid-3">
+                <div class="card">
+                    <h4>Multi-Agent Orchestration</h4>
+                    <p>9 specialized agents (Supervisor, Planner, Retriever, Researcher, Validator, Reasoner, Critic, ReportGenerator, ToolAgent + Memory) execute in a strict sequential LangGraph workflow with conditional branching.</p>
+                </div>
+                <div class="card">
+                    <h4>Conversational Chat</h4>
+                    <p>Chat interface with conversation history, evidence display, citations, confidence scores, plan preview, and tool execution settings toggle.</p>
+                </div>
+                <div class="card">
+                    <h4>Document Intelligence</h4>
+                    <p>Upload PDF, DOC, DOCX, XLS, XLSX, TXT, MD, CSV, ZIP. Documents are parsed with Docling or custom loaders, chunked, embedded, and stored in Qdrant for semantic retrieval.</p>
+                </div>
+                <div class="card">
+                    <h4>Streaming Pipeline</h4>
+                    <p>Real-time SSE streaming of agent events (agent_start, agent_output, agent_complete, pipeline_complete, error) via <code>GET /api/pipeline/stream</code>.</p>
+                </div>
+                <div class="card">
+                    <h4>Evaluation Metrics</h4>
+                    <p>DeepEval-style report quality scoring and RAGAS-style RAG faithfulness scoring run after every pipeline. Metrics include readability, structure, completeness, citation density, context relevance, and pipeline efficiency.</p>
+                </div>
+                <div class="card">
+                    <h4>Evidence &amp; Citations</h4>
+                    <p>Evidence verification pipeline extracts claims, matches evidence, generates citations, and computes confidence/relevance. Evidence gap analysis identifies unsupported claims.</p>
+                </div>
+                <div class="card">
+                    <h4>PDF Reports</h4>
+                    <p>Generate branded PDF reports with table of contents, heading hierarchy, body content, and watermark using FPDF.</p>
+                </div>
+                <div class="card">
+                    <h4>URL &amp; Repo Ingestion</h4>
+                    <p>Ingest content from URLs and GitHub repositories. Parse, chunk, embed, and index into Qdrant for retrieval.</p>
+                </div>
+                <div class="card">
+                    <h4>Chat History</h4>
+                    <p>Persistent conversation history with CRUD, search, export/import. Manage multiple sessions and resumes.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="scope">
+            <h2>Scope</h2>
+            <div class="grid grid-2">
+                <div class="card">
+                    <h4>In Scope</h4>
+                    <ul>
+                        <li>Full backend multi-agent RAG pipeline</li>
+                        <li>Frontend dashboard with Pipeline, Chat, Documents, History</li>
+                        <li>Evidence verification and citation generation</li>
+                        <li>Evaluation metrics (DeepEval + RAGAS heuristics)</li>
+                        <li>Document upload and vector indexing</li>
+                        <li>URL and repository ingestion</li>
+                        <li>PDF report generation</li>
+                        <li>Chat history management</li>
+                        <li>Streaming pipeline execution</li>
+                        <li>Docker Compose local deployment</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4>Out of Scope (Current Milestone)</h4>
+                    <ul>
+                        <li>Live cloud deployment (Vercel, Render, Fly.io)</li>
+                        <li>Multi-user authentication and authorization</li>
+                        <li>Persistent database for chat history (currently in-memory)</li>
+                        <li>Advanced RAG (Hybrid search, re-ranking, multi-vector)</li>
+                        <li>Fine-tuning or custom model training</li>
+                        <li>Mobile-native applications</li>
+                        <li>Real-time collaboration</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="limitations">
+            <h2>Limitations</h2>
+            <div class="grid grid-2">
+                <div class="card">
+                    <h4>Current Constraints</h4>
+                    <ul>
+                        <li><strong>No live deployment:</strong> Application runs locally only; no public URL.</li>
+                        <li><strong>In-memory stores:</strong> Document registry, pipeline history, and chat history are in-memory and lost on restart unless persisted via Docker volumes.</li>
+                        <li><strong>Dry-run mode:</strong> Without API keys, agents return empty/dry-run results.</li>
+                        <li><strong>Single LLM primary:</strong> Default is Gemini 3.6 Flash; Groq is fallback only.</li>
+                        <li><strong>Sequential execution:</strong> Pipeline runs agents sequentially; no parallel execution of independent branches.</li>
+                        <li><strong>Heuristic evaluation:</strong> DeepEval and RAGAS metrics are heuristic-based; full framework integration requires additional packages.</li>
+                        <li><strong>No authentication:</strong> No user accounts, roles, or API key management for end users.</li>
+                        <li><strong>Local file storage:</strong> Uploaded documents stored locally; no S3 or cloud storage integration.</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4>Technical Debt &amp; Trade-offs</h4>
+                    <ul>
+                        <li>No LangChain dependency (by design) — some ecosystem integrations require custom wrappers.</li>
+                        <li>Evidence matching is heuristic-based; not a full NLI/claim verification model.</li>
+                        <li>Qdrant is the only vector store; no abstraction for swapping backends.</li>
+                        <li>Frontend is a single-page app; routing is client-side state-based, not URL-based.</li>
+                        <li>No automated CI/CD pipeline configured.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="advantages">
+            <h2>Advantages</h2>
+            <div class="grid grid-3">
+                <div class="card">
+                    <h4>Modular &amp; Testable</h4>
+                    <p>Every agent is standalone with its own API endpoint. Clean architecture enables unit testing, isolated development, and easy replacement of components.</p>
+                </div>
+                <div class="card">
+                    <h4>Transparent Pipeline</h4>
+                    <p>LangGraph provides explicit, debuggable workflow. SSE streaming shows real-time agent execution. No hidden "black box" reasoning.</p>
+                </div>
+                <div class="card">
+                    <h4>Evidence-Grounded</h4>
+                    <p>Responses are linked to retrieved evidence with citations, confidence scores, and gap analysis. Reduces hallucination risk.</p>
+                </div>
+                <div class="card">
+                    <h4>Built-in Evaluation</h4>
+                    <p>DeepEval and RAGAS metrics run automatically after every pipeline, providing continuous quality feedback without external tooling.</p>
+                </div>
+                <div class="card">
+                    <h4>Type Safety</h4>
+                    <p>End-to-end Pydantic schemas ensure request/response contracts are validated. Mypy strict mode catches type errors early.</p>
+                </div>
+                <div class="card">
+                    <h4>Local-First</h4>
+                    <p>Runs fully locally with Docker Compose. No mandatory cloud dependencies. Dry-run mode allows development without API keys.</p>
+                </div>
+                <div class="card">
+                    <h4>Modern Stack</h4>
+                    <p>FastAPI, Next.js 14, Tailwind CSS, LangGraph, Qdrant — all modern, well-maintained libraries with active communities.</p>
+                </div>
+                <div class="card">
+                    <h4>Extensible</h4>
+                    <p>Add new agents by implementing the agent interface and registering in the graph. Swap LLM providers via factory pattern. Add tools via the tools module.</p>
+                </div>
+                <div class="card">
+                    <h4>Production-Ready Patterns</h4>
+                    <p>Structured logging, graceful fallbacks, CORS hardening, health checks, request correlation IDs, and typed envelopes.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="future">
+            <h2>Future Enhancements</h2>
+            <div class="grid grid-2">
+                <div class="card">
+                    <h4>Deployment &amp; Scale</h4>
+                    <ul>
+                        <li>Deploy frontend to Vercel / Netlify / Fly.io</li>
+                        <li>Deploy backend to Render / Fly.io / AWS ECS</li>
+                        <li>Managed Qdrant cloud or alternative vector DB</li>
+                        <li>Redis caching layer for frequent queries</li>
+                        <li>PostgreSQL for persistent chat history and metadata</li>
+                        <li>CI/CD with GitHub Actions</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4>AI &amp; RAG</h4>
+                    <ul>
+                        <li>Hybrid search (vector + BM25)</li>
+                        <li>Re-ranking with cross-encoder models</li>
+                        <li>Multi-vector representations per document</li>
+                        <li>Query expansion and decomposition</li>
+                        <li>Conversational memory with summarization</li>
+                        <li>Agent fine-tuning for domain-specific tasks</li>
+                        <li>Support for OpenAI, Anthropic, Cohere models</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4>User Experience</h4>
+                    <ul>
+                        <li>User authentication (OAuth, JWT)</li>
+                        <li>Multi-tenant workspace isolation</li>
+                        <li>Shared conversations and reports</li>
+                        <li>Advanced analytics dashboard</li>
+                        <li>Plugin system for custom tools</li>
+                        <li>Mobile-responsive PWA</li>
+                        <li>Voice input and output</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4>Observability &amp; Quality</h4>
+                    <ul>
+                        <li>Full LangSmith / Langfuse integration</li>
+                        <li>Prometheus metrics + Grafana dashboards</li>
+                        <li>A/B testing for prompts and models</li>
+                        <li>Automated regression testing for agents</li>
+                        <li>Human-in-the-loop feedback loop</li>
+                        <li>Automated prompt optimization</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="database">
+            <h2>Database &amp; Tools</h2>
+            <div class="grid grid-2">
+                <div class="card">
+                    <h4>Primary Database</h4>
+                    <p><strong>Qdrant</strong> — Vector database for semantic retrieval.</p>
+                    <ul>
+                        <li>Stores embedded document chunks and memory entries</li>
+                        <li>Cosine distance metric</li>
+                        <li>Collection: <code>aegisai</code></li>
+                        <li>Ports: 6333 (HTTP), 6334 (gRPC)</li>
+                        <li>Docker volume: <code>qdrant_data</code></li>
+                        <li>Client: <code>qdrant-client</code> Python SDK</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4>Embeddings</h4>
+                    <p>Embeddings are generated via the configured LLM provider (Google GenAI by default) or compatible embedding models. The system uses Hugging Face's transformers library and sentence-transformers models, with the Hugging Face API key enabling access to their hosted inference API for embedding generation. Local FastEmbed fallback is available for offline operation. Vectors are upserted into Qdrant for similarity search.</p>
+                </div>
+            </div>
+
+            <h3 style="margin-top:24px;">Complete Tool Inventory</h3>
+            <div class="card">
+                <table>
+                    <thead>
+                        <tr><th>Tool</th><th>Purpose</th><th>Used By</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><code>DocumentLoader</code></td><td>Parse PDF, DOC, DOCX, XLS, XLSX, TXT, CSV, MD, ZIP, URLs via Docling/custom loaders</td><td>Retriever, Ingestion</td></tr>
+                        <tr><td><code>TavilySearch</code></td><td>Web search for up-to-date information</td><td>Researcher</td></tr>
+                        <tr><td><code>WebScraper</code></td><td>Scrape website content</td><td>Ingestion, Researcher</td></tr>
+                        <tr><td><code>MCPClient</code></td><td>Model Context Protocol for external tools</td><td>ToolAgent</td></tr>
+                        <tr><td><code>QdrantDB</code></td><td>Vector storage and similarity search</td><td>Retriever, Memory</td></tr>
+                        <tr><td><code>EvidenceVerificationPipeline</code></td><td>Claim extraction, evidence matching, citations</td><td>Chat, Pipeline</td></tr>
+                        <tr><td><code>EvidenceGapAnalyzer</code></td><td>Coverage metrics and gap recommendations</td><td>Frontend, Evaluation</td></tr>
+                        <tr><td><code>ChatHistoryManager</code></td><td>Conversation CRUD, search, export/import</td><td>Chat, History</td></tr>
+                        <tr><td><code>AegisPDFReport</code></td><td>Branded PDF generation from Markdown</td><td>ReportGenerator</td></tr>
+                        <tr><td><code>AutoFallbackLLM</code></td><td>Primary-to-fallback LLM switching</td><td>All Agents</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="live">
+            <h2>Live Frontend URL</h2>
+            <div class="callout purple">
+                <p><strong>No live deployment is currently configured.</strong> AegisAI is designed for <strong>local development only</strong>. The frontend runs at <code>http://localhost:3000</code> and the backend at <code>http://localhost:8000</code> when started locally or via Docker Compose.</p>
+                <p style="margin-top:8px;">To deploy publicly, you would need to:</p>
+                <ul>
+                    <li>Push the repository to GitHub</li>
+                    <li>Connect the frontend to <a href="https://vercel.com" target="_blank" rel="noopener">Vercel</a>, <a href="https://render.com" target="_blank" rel="noopener">Render</a>, or <a href="https://fly.io" target="_blank" rel="noopener">Fly.io</a></li>
+                    <li>Deploy the backend to a container service (Render, Fly.io, AWS ECS, etc.)</li>
+                    <li>Use a managed Qdrant instance or cloud vector database</li>
+                    <li>Set production environment variables for API keys and database URLs</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="deployment">
+            <h2>Deployment</h2>
+            <div class="grid grid-2">
+                <div class="card">
+                    <h4>Local Development</h4>
+                    <pre>./scripts/start_docker.sh
+cp .env.example backend/.env
+./scripts/setup.sh
+./scripts/start_backend.sh &amp; ./scripts/start_frontend.sh</pre>
+                    <p style="margin-top:8px;">Backend: <code>http://localhost:8000</code></p>
+                    <p>Frontend: <code>http://localhost:3000</code></p>
+                    <p>Qdrant: <code>http://localhost:6333</code></p>
+                </div>
+                <div class="card">
+                    <h4>Docker Compose</h4>
+                    <pre>docker compose -f docker/docker-compose.yml up --build</pre>
+                    <p style="margin-top:8px;">Starts all services with proper dependencies and health checks. Volumes persist Qdrant data.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="testing">
+            <h2>Testing &amp; Quality</h2>
+            <div class="grid grid-3">
+                <div class="card">
+                    <h4>Unit &amp; Integration Tests</h4>
+                    <p>65 tests passing. Uses pytest + pytest-asyncio. Tests cover agents, evaluation, ingestion verification, and API endpoints.</p>
+                </div>
+                <div class="card">
+                    <h4>Linting</h4>
+                    <p>Ruff for fast Python linting with E, F, I, B, UP, ASYNC rules.</p>
+                </div>
+                <div class="card">
+                    <h4>Type Checking</h4>
+                    <p>Mypy strict mode on backend code. Excludes tests and third-party modules with missing stubs.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="quickstart">
+            <h2>Quick Reference</h2>
+            <div class="grid grid-2">
+                <div class="card">
+                    <h4>Key Backend Endpoints</h4>
+                    <ul>
+                        <li><code>GET /api/v1/health</code> — Health check</li>
+                        <li><code>POST /api/chat</code> — Conversational chat with evidence</li>
+                        <li><code>POST /api/pipeline/run</code> — Full pipeline execution</li>
+                        <li><code>GET /api/pipeline/stream</code> — SSE streaming</li>
+                        <li><code>POST /api/agent/&lt;name&gt;</code> — Standalone agent testing</li>
+                        <li><code>POST /api/upload</code> — Document upload</li>
+                        <li><code>POST /api/ingest/url</code> — URL ingestion</li>
+                        <li><code>POST /api/ingest/repo</code> — Repository ingestion</li>
+                        <li><code>GET /api/history</code> — Chat history</li>
+                        <li><code>POST /api/report/pdf</code> — PDF report generation</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4>Environment Variables</h4>
+                    <ul>
+                        <li><code>AEGIS_GEMINI_API_KEY</code> — Google Gemini API key</li>
+                        <li><code>AEGIS_TAVILY_API_KEY</code> — Tavily search API key</li>
+                        <li><code>AEGIS_LANGSMITH_API_KEY</code> — LangSmith tracing (optional)</li>
+                        <li><code>AEGIS_QDRANT_URL</code> — Qdrant instance URL</li>
+                        <li><code>AEGIS_GROQ_API_KEY</code> — Groq fallback API key</li>
+                        <li><code>NEXT_PUBLIC_API_URL</code> — Frontend API base URL</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <div class="container">
+                AegisAI Documentation — Generated from codebase audit. All 65 backend tests passing. Local development only.
+            </div>
+        </footer>
+    </main>
+</body>
+</html>

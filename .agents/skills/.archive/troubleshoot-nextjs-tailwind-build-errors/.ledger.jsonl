@@ -1,0 +1,1 @@
+{"action": "create", "reason": "The assistant spent significant time debugging Next.js build failures. Capturing the successful troubleshooting steps (fixing .mjs extension, installing autoprefixer as a direct dependency) will prevent this in the future.", "evidence": "references/evidence-861ef2d5.md"}
